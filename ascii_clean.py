@@ -25,8 +25,8 @@ def normalize_text(text: str) -> tuple[str, list[str]]:
     return new_text, changes
 
 
-def process_file(path: Path, dry_run: bool = False) -> bool:
-    if not path.is_file() or path.suffix != '.py':
+def process_file(path: Path, file_type='py', dry_run: bool = False) -> bool:
+    if not path.is_file() or path.suffix != f'.{file_type}':
         return False
 
     with path.open('r', encoding='utf-8', errors='ignore', newline='') as f:
@@ -49,9 +49,9 @@ def process_file(path: Path, dry_run: bool = False) -> bool:
     return False
 
 
-def process_directory(directory: Path, dry_run: bool = True) -> None:
+def process_directory(directory: Path, file_type='py', dry_run: bool = True) -> None:
     for path in directory.rglob('*.py'):
-        process_file(path, dry_run)
+        process_file(path, file_type, dry_run)
 
 
 if __name__ == '__main__':
@@ -68,4 +68,5 @@ if __name__ == '__main__':
         dry_run = False
 
     target_dir = Path(directory)
-    process_directory(target_dir, dry_run=dry_run)
+    process_directory(target_dir, file_type='py', dry_run=dry_run)
+
